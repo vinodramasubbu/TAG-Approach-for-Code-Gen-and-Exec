@@ -1,0 +1,13 @@
+POST http://localhost:7071/api/nl_to_csv HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="prompt"
+
+How smokers are there in each region?
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="insurance.csv"
+Content-Type: text/csv
+
+< ./insurance.csv
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
