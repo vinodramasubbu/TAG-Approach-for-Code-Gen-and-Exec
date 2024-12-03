@@ -1,6 +1,6 @@
-# Azure Function Setup and Usage
+# Table-Augmented Generation for Structured Data Interaction
 
-## Solution Overview: Table-Augmented Generation for Structured Data Interaction
+## Solution Overview
 
 This solution demonstrates a table-augmented generation approach to enable interaction with structured data using natural language. It leverages **Azure Functions** as the orchestrator, integrating with **GPT-40** for code generation and reasoning tasks.
 
