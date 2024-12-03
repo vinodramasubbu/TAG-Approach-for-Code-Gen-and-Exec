@@ -2,7 +2,7 @@
 
 ## Solution Overview
 
-This solution demonstrates a tablevaugmented generation approach to enable interaction with structured data using natural language. It leverages **Azure Functions** as the orchestrator, integrating with **GPT-40** for code generation and reasoning tasks.
+This solution demonstrates a table-augmented generation approach to facilitate natural language interaction with structured data. It uses **Azure Functions** as the orchestrator and integrates with **GPT-4** for code generation and reasoning. The design ensures an efficient and seamless way to interact with structured data by combining natural language understanding with powerful data-handling capabilities.
 
 Key features include:
 
@@ -11,8 +11,6 @@ Key features include:
 3. **Scalability and Flexibility**: The approach is adaptable and can be extended to support various data sources beyond SQL Server or CSV.
 
 Note: This solution utilizes the LangChain framework. Alternatively, you may choose to use Semantic Kernel or LlamaIndex, depending on your familiarity and comfort level with these tools.
-
-This framework is designed to provide an efficient way to interact with structured data, combining natural language understanding with robust data-handling capabilities.
 
 ## Solution Architecure
 
