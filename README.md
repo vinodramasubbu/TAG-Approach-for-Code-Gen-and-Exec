@@ -14,7 +14,7 @@ Note: This solution utilizes the LangChain framework. Alternatively, you may cho
 
 ## Solution Architecure
 
-![Solution Architecture](solution_architecturev1.png)
+![Solution Architecture](solution_architecture.png)
 
 ## Prerequisites
 
