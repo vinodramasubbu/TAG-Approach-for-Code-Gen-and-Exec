@@ -1,4 +1,4 @@
-# Table-Augmented Generation for Structured Data Interaction
+# Table Augmented Generation for Structured Data Interaction
 
 ## Solution Overview
 
