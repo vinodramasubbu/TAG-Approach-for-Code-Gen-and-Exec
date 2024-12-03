@@ -221,6 +221,8 @@ def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
     # Save the DataFrame as a CSV file
     csv_filename = 'output.csv'
     df.to_csv(csv_filename, index=False)
+
+    # Get the column names from the DataFrame to aid in code generation
     column_names = df.columns
     column_names_list = df.columns.tolist()
     

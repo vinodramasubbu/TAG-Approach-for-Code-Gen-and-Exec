@@ -2,7 +2,7 @@
 
 ## Solution Overview
 
-This solution demonstrates a table-augmented generation approach to facilitate natural language interaction with structured data. It uses **Azure Functions** as the orchestrator and integrates with **GPT-4** for code generation and reasoning. The design ensures an efficient and seamless way to interact with structured data by combining natural language understanding with powerful data-handling capabilities.
+This solution demonstrates a table augmented generation approach to facilitate natural language interaction with structured data. It uses **Azure Functions** as the orchestrator and integrates with **GPT-4** for code generation and reasoning. The design ensures an efficient and seamless way to interact with structured data by combining natural language understanding with powerful data-handling capabilities.
 
 Key features include:
 
