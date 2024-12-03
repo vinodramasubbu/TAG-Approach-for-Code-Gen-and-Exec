@@ -87,6 +87,8 @@ This framework is designed to provide an efficient way to interact with structur
 
 1. **`nl-to-sqldb` Trigger:**
 
+    - use nl-to-sqldb-test.http to execute the test with following parameters
+
     - **Endpoint:** `http://localhost:7071/api/nl-to-sqldb`
     - **Method:** `POST`
     - **Content-Type:** `application/json`
@@ -101,9 +103,11 @@ This framework is designed to provide an efficient way to interact with structur
     - **Description:** This trigger processes a natural language query to analyze data from a SQL database. It generates and executes SQL queries based on the provided prompt and returns the result.
 
 
-![NL to SQL](nl_to_sqldb.png)
+![NL to SQL](nl-to-sqldb.png)
 
-2. **`nl_to_csv` Trigger:**
+2. **`nl_to_csv` Trigger:** 
+     
+    - use nl-to-csv-test.http to execute the test with following parameters
 
     - **Endpoint:** `http://localhost:7071/api/nl_to_csv`
     - **Method:** `POST`
@@ -122,7 +126,7 @@ This framework is designed to provide an efficient way to interact with structur
         < ./insurance.csv
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         ```
-![NL to CSV](nl_to_csv.png)
+![NL to CSV](nl-to-csv.png)
 
     - **Description:** This trigger processes a natural language query to analyze data from an uploaded CSV file. It generates and executes Python code to analyze the data and returns the result.
 
