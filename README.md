@@ -1,59 +1,117 @@
-Azure Function Setup and Usage
-Prerequisites
-Azure Functions Core Tools
-Python 3.8+
-Visual Studio Code with the Azure Functions extension
-Setup
-Clone the repository:
+# Azure Function Setup and Usage
 
-Create a virtual environment:
+## Prerequisites
 
-Activate the virtual environment:
+- [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
+- [Python 3.8+](https://www.python.org/downloads/)
+- [Visual Studio Code](https://code.visualstudio.com/) with the [Azure Functions extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
 
-Windows:
+## Setup
 
-macOS/Linux:
+1. **Clone the repository:**
 
-Install the required packages:
+    ```sh
+    git clone <repository-url>
+    cd <repository-directory>
+    ```
 
-Configuration:
+2. **Create a virtual environment:**
 
-Ensure the local.settings.json file contains the necessary environment variables for connecting to the SQL database. Create or update the file with the following content:
+    ```sh
+    python -m venv .venv
+    ```
 
-Start the Azure Function:
+3. **Activate the virtual environment:**
 
-Running the Function
-HTTP Triggers
-nl-to-sqldb Trigger:
+    - **Windows:**
 
-Endpoint: http://localhost:7071/api/nl-to-sqldb
+        ```sh
+        .venv\Scripts\activate
+        ```
 
-Method: POST
+    - **macOS/Linux:**
 
-Content-Type: application/json
+        ```sh
+        source .venv/bin/activate
+        ```
 
-Body:
+4. **Install the required packages:**
 
-Description: This trigger processes a natural language query to analyze data from a SQL database. It generates and executes SQL queries based on the provided prompt and returns the result.
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-nl_to_csv Trigger:
+5. **Configuration:**
 
-Endpoint: http://localhost:7071/api/nl_to_csv
+    Ensure the [local.settings.json](http://_vscodecontentref_/0) file contains the necessary environment variables for connecting to the SQL database. Create or update the file with the following content:
 
-Method: POST
+    ```json
+    {
+      "IsEncrypted": false,
+      "Values": {
+        "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+        "FUNCTIONS_WORKER_RUNTIME": "python",
+        "SQLSERVER": "<your-sql-server>",
+        "SQLDATABASE": "<your-database>",
+        "SQLUSERNAME": "<your-username>",
+        "SQLPASSWORD": "<your-password>"
+      }
+    }
+    ```
 
-Content-Type: multipart/form-data
+6. **Start the Azure Function:**
 
-Body:
+    ```sh
+    func start
+    ```
 
-Description: This trigger processes a natural language query to analyze data from an uploaded CSV file. It generates and executes Python code to analyze the data and returns the result.
+## Running the Function
 
-Additional Information
-Logs:
+### HTTP Triggers
 
-Logs can be viewed in the terminal where the Azure Function is running.
-Debugging:
+1. **`nl-to-sqldb` Trigger:**
 
-Use the provided launch.json configuration to attach the debugger in Visual Studio Code.
-For more detailed information, refer to the Azure Functions documentation.
+    - **Endpoint:** `http://localhost:7071/api/nl-to-sqldb`
+    - **Method:** `POST`
+    - **Content-Type:** `application/json`
+    - **Body:**
 
+        ```json
+        {
+          "prompt": "How many smokers are there in each region?"
+        }
+        ```
+
+    - **Description:** This trigger processes a natural language query to analyze data from a SQL database. It generates and executes SQL queries based on the provided prompt and returns the result.
+
+2. **`nl_to_csv` Trigger:**
+
+    - **Endpoint:** `http://localhost:7071/api/nl_to_csv`
+    - **Method:** `POST`
+    - **Content-Type:** `multipart/form-data`
+    - **Body:**
+
+        ```http
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW
+        Content-Disposition: form-data; name="prompt"
+
+        How many smokers are there in each region?
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW
+        Content-Disposition: form-data; name="file"; filename="insurance.csv"
+        Content-Type: text/csv
+
+        < ./insurance.csv
+        ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+        ```
+
+    - **Description:** This trigger processes a natural language query to analyze data from an uploaded CSV file. It generates and executes Python code to analyze the data and returns the result.
+
+## Additional Information
+
+- **Logs:**
+    - Logs can be viewed in the terminal where the Azure Function is running.
+
+- **Debugging:**
+    - Use the provided [launch.json](http://_vscodecontentref_/1) configuration to attach the debugger in Visual Studio Code.
+
+For more detailed information, refer to the [Azure Functions documentation](https://docs.microsoft.com/en-us/azure/azure-functions/).
