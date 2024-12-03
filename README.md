@@ -1,5 +1,21 @@
 # Azure Function Setup and Usage
 
+## Solution Overview: Table-Augmented Generation for Structured Data Interaction
+
+This solution demonstrates a table-augmented generation approach to enable interaction with structured data using natural language. It leverages **Azure Functions** as the orchestrator, integrating with **GPT-40** for code generation and reasoning tasks.
+
+Key features include:
+
+1. **Dynamic Code Generation**: The solution generates Python code to query SQL Server tables and answer user questions effectively.
+2. **CSV File Support**: It processes uploaded CSV files, enabling data analysis and insights generation.
+3. **Scalability and Flexibility**: The approach is adaptable and can be extended to support various data sources beyond SQL Server or CSV.
+
+This framework is designed to provide an efficient way to interact with structured data, combining natural language understanding with robust data-handling capabilities.
+
+## Solution Architecure
+
+![Solution Architecture](solution_architecture.png)
+
 ## Prerequisites
 
 - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
@@ -84,6 +100,9 @@
 
     - **Description:** This trigger processes a natural language query to analyze data from a SQL database. It generates and executes SQL queries based on the provided prompt and returns the result.
 
+
+![NL to SQL](nl_to_sqldb.png)
+
 2. **`nl_to_csv` Trigger:**
 
     - **Endpoint:** `http://localhost:7071/api/nl_to_csv`
@@ -103,6 +122,7 @@
         < ./insurance.csv
         ------WebKitFormBoundary7MA4YWxkTrZu0gW--
         ```
+![NL to CSV](nl_to_csv.png)
 
     - **Description:** This trigger processes a natural language query to analyze data from an uploaded CSV file. It generates and executes Python code to analyze the data and returns the result.
 
