@@ -59,7 +59,7 @@ Note: This solution utilizes the LangChain framework. Alternatively, you may cho
 
 5. **Configuration:**
 
-    Ensure the [local.settings.json](http://_vscodecontentref_/0) file contains the necessary environment variables for connecting to the SQL database. Create or update the file with the following content:
+    Ensure the [local.settings.json](http://_vscodecontentref_/0) file contains the necessary environment variables for connecting to the Azure OpenAI endpoint and SQL database. Create or update the file with the following content:
 
     ```json
     {
