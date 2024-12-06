@@ -6,7 +6,7 @@ This solution demonstrates a table augmented generation approach to facilitate n
 
 Key features include:
 
-1. **Dynamic Code Generation**: This solution dynamically generates Python code tailored to query data from SQL Server tables.
+1. **Dynamic Code Generation**: This solution dynamically generates Python code tailored to query data from SQL Server.
 2. **CSV File Support**: It processes uploaded CSV files, enabling data analysis and insights generation.
 3. **Scalability and Flexibility**: The approach is adaptable and can be extended to support various data sources beyond SQL Server or CSV.
 
