@@ -14,7 +14,7 @@ Note: This solution utilizes the LangChain framework. Alternatively, you may cho
 
 ## Solution Architecure
 
-![Solution Architecture](solution_architecture.png)
+![Solution Architecture](solution_architecture_sql_csv.png)
 
 ## Prerequisites
 - Use the [Insurance SQL File](insurance.sql) and [Insurance Data File](insurance.csv) to populate your SQL Server Database.
