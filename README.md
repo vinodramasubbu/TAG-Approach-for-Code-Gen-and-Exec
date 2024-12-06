@@ -17,7 +17,7 @@ Note: This solution utilizes the LangChain framework. Alternatively, you may cho
 ![Solution Architecture](solution_architecture.png)
 
 ## Prerequisites
-
+- Use the [insurance sql file](insurance.sql) and [insurance data file](insurance.csv) to populate your SQL Server Database.
 - [Azure Functions Core Tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local)
 - [Python 3.11+](https://www.python.org/downloads/)
 - [Visual Studio Code](https://code.visualstudio.com/) with the [Azure Functions extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-azurefunctions)
@@ -67,6 +67,10 @@ Note: This solution utilizes the LangChain framework. Alternatively, you may cho
       "Values": {
         "AzureWebJobsStorage": "UseDevelopmentStorage=true",
         "FUNCTIONS_WORKER_RUNTIME": "python",
+        "AZURE_OPENAI_KEY": "<azure-openai-key>",
+        "AZURE_OPENAI_ENDPOINT": "<azure-openai-endpoint>",
+        "AZURE_OPENAI_DEPLOYMENT": "gpt-4o",
+        "AZURE_OPENAI_VERSION": "2024-08-01-preview",
         "SQLSERVER": "<your-sql-server>",
         "SQLDATABASE": "<your-database>",
         "SQLUSERNAME": "<your-username>",
