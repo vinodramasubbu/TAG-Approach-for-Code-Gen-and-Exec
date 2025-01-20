@@ -11,7 +11,7 @@ from langchain_openai import AzureChatOpenAI
 from langchain_core.messages import HumanMessage
 from langchain.agents.output_parsers.openai_tools import OpenAIToolsAgentOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.pydantic_v1 import BaseModel, Field
+#from langchain_core.pydantic_v1 import BaseModel, Field
 from langchain_experimental.utilities import PythonREPL
 from langchain_community.chat_message_histories import RedisChatMessageHistory
 
@@ -25,7 +25,7 @@ connectionString = f'DRIVER={{ODBC Driver 18 for SQL Server}};SERVER={SERVER};DA
 
 brochure_image_url=""
 
-code_gen_prompt = ChatPromptTemplate.from_messages(
+sql_code_gen_prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
@@ -158,16 +158,30 @@ llm = AzureChatOpenAI(
     )
 
 # Data model
-class code(BaseModel):
-    """Code output"""
-    prefix: str = Field(description="Description of the problem and approach")
-    imports: str = Field(description="Code block import statements")
-    code: List = Field(description="Code block not including import statements")
-    description = "Schema for code solutions to questions about LCEL."
+code_gen_schema = {
+            "title": "llm_code",
+            "description": "generate code.",
+            "type": "object",
+            "properties": {
+                "prefix": {
+                    "type": "string",
+                    "description": "Description of the code",
+                },
+                "imports": {
+                    "type": "string",
+                    "description": "Code block import statements"
+                },
+                "code": {
+                    "type": "string",
+                    "description": "Code block not including import statements"
+                },
+            },
+            "required": ["prefix", "imports", "code"],
+        }
 
-code_gen_chain = code_gen_prompt | llm.with_structured_output(code)
-file_upload_code_gen_prompt_chain = file_upload_code_gen_prompt | llm.with_structured_output(code)
-visualize_data_code_gen_prompt_chain = visualize_data_code_gen_prompt | llm.with_structured_output(code)
+sql_code_gen_chain = sql_code_gen_prompt | llm.with_structured_output(code_gen_schema)
+file_upload_code_gen_prompt_chain = file_upload_code_gen_prompt | llm.with_structured_output(code_gen_schema)
+visualize_data_code_gen_prompt_chain = visualize_data_code_gen_prompt | llm.with_structured_output(code_gen_schema)
 
 repl = PythonREPL()
 
@@ -179,9 +193,9 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     req_body = req.get_json()
     user_prompt = req_body.get('prompt')
 
-    code_result = code_gen_chain.invoke({"messages": [("user", user_prompt)]})
-    generated_code = "LLM Generated Code"+ "\n" +code_result.imports + "\n" + "\n".join(code_result.code)
-    code_to_execute = "connectionString="+f'"{connectionString}"'+ "\n" +code_result.imports + "\n" + "\n".join(code_result.code)
+    code_result = sql_code_gen_chain.invoke({"messages": [("user", user_prompt)]})
+    generated_code = "LLM Generated Code"+ "\n" +code_result['imports'] + "\n" + code_result['code']
+    code_to_execute = "connectionString="+f'"{connectionString}"'+ "\n" +code_result['imports'] + "\n" + code_result['code']
 
     result = repl.run(code_to_execute)
 
@@ -198,15 +212,24 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
     )
 
     # Data model
-    class llm_response(BaseModel):
-        """llm output"""
-        resp: str = Field(description="llm response to the user query")
+    llm_response = {
+            "title": "llm_response",
+            "description": "llm_response",
+            "type": "object",
+            "properties": {
+                "resp": {
+                    "type": "string",
+                    "description": "llm response to the user query",
+                }
+            },
+            "required": ["resp"],
+        }
 
     ai_chain = llm_prompt | llm.with_structured_output(llm_response) 
     final_result = ai_chain.invoke({"messages": [("user", user_prompt + "resultset: "+ str(  result ))]})
     
     return func.HttpResponse(
-          json.dumps({"generated_code": f"{generated_code}","code_result": f"{result}", "final_result": f"{final_result.resp}"}),
+          json.dumps({"generated_code": f"{generated_code}","code_result": f"{result}", "final_result": f"{final_result['resp']}"}),
           status_code=200)
 
 @app.route(route="nl_to_csv", auth_level=func.AuthLevel.ANONYMOUS)
@@ -221,19 +244,15 @@ def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
     # Save the DataFrame as a CSV file
     csv_filename = 'output.csv'
     df.to_csv(csv_filename, index=False)
-
-    # Get the column names from the DataFrame to aid in code generation
     column_names = df.columns
     column_names_list = df.columns.tolist()
     
     code_result = file_upload_code_gen_prompt_chain.invoke({"messages": [("user", user_prompt + "\n" + "sample_data:" + "\n" + f'"{column_names_list}"' )]})
-    generated_code = "LLM Generated Code"+ "\n" +code_result.imports + "\n" + "\n".join(code_result.code)
-    code_to_execute =  code_result.imports + "\n" + "\n".join(code_result.code)
+    generated_code = "LLM Generated Code"+ "\n" +code_result['imports'] + "\n" + code_result['code']
+    code_to_execute =  code_result['imports'] + "\n" + code_result['code']
 
     result = repl.run(code_to_execute)
     print("-----RESULT---"+result)
-
-    from langchain.memory import ChatMessageHistory
 
     llm_prompt = ChatPromptTemplate.from_messages(
     [
@@ -249,14 +268,22 @@ def http_trigger1(req: func.HttpRequest) -> func.HttpResponse:
     )
     
     # Data model
-    class llm_response(BaseModel):
-        """llm output"""
-        resp: str = Field(description="llm response to the user query")
-
+    llm_response = {
+            "title": "llm_response",
+            "description": "llm_response",
+            "type": "object",
+            "properties": {
+                "resp": {
+                    "type": "string",
+                    "description": "llm response to the user query",
+                }
+            },
+            "required": ["resp"],
+        }
 
     ai_chain = llm_prompt | llm.with_structured_output(llm_response)
     final_result = ai_chain.invoke({"messages": [("user", user_prompt + "resultset: "+ result)]})
 
     return func.HttpResponse(
-          json.dumps({"generated_code": f"{generated_code}","code_result": f"{result}", "final_result": f"{final_result.resp}"}),
+          json.dumps({"generated_code": f"{generated_code}","code_result": f"{result}", "final_result": f"{final_result['resp']}"}),
           status_code=200)
